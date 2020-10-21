@@ -33,8 +33,10 @@ class _AnimatedRectagleState extends State<AnimatedRectagle>
   AnimationController controller;
   Animation<double> rotation;
   Animation<double> opacity;
+
   Animation<double> moveToRight;
   Animation<double> scale;
+  Animation<double> opacityOut;
 
   @override
   void initState() {
@@ -47,6 +49,9 @@ class _AnimatedRectagleState extends State<AnimatedRectagle>
     opacity = Tween(begin: 0.1, end: 1.0).animate((CurvedAnimation(
         parent: controller, curve: Interval(0, 0.25, curve: Curves.easeOut))));
 
+    opacityOut = Tween(begin: 0.1, end: 1.0).animate((CurvedAnimation(
+        parent: controller, curve: Interval(0.75, 1.0, curve: Curves.easeOut))));
+
     moveToRight = Tween(begin: 0.0, end: 200.0)
         .animate(CurvedAnimation(parent: controller, curve: Curves.easeOut));
 
@@ -54,7 +59,6 @@ class _AnimatedRectagleState extends State<AnimatedRectagle>
         .animate(CurvedAnimation(parent: controller, curve: Curves.easeOut));
 
     controller.addListener(() {
-      print('Status ${controller.status}');
 
       if (controller.status == AnimationStatus.completed) {
         controller.reverse();
@@ -78,12 +82,14 @@ class _AnimatedRectagleState extends State<AnimatedRectagle>
       animation: controller,
       child: _Rectagle(),
       builder: (context, child) {
+        print('Opacity ${opacity.status}');
+        // print('Rotation ${rotation.status}');
         return Transform.translate(
           offset: Offset(moveToRight.value, 0),
           child: Transform.rotate(
               angle: rotation.value,
               child: Opacity(
-                opacity: opacity.value,
+                opacity: opacity.value - opacityOut.value,
                 child: Transform.scale(scale: scale.value, child: child),
               )),
         );
