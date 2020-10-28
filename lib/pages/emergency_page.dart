@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:custom_painter/widgets/fat_button.dart';
 import 'package:custom_painter/widgets/header.dart';
 import 'package:flutter/material.dart';
@@ -42,14 +43,16 @@ class EmergencyPage extends StatelessWidget {
           Color(0xff46997D)),
     ];
 
-    List<FatButton> itemMap = items
-        .map((e) => FatButton(
-              icon: e.icon,
-              text: e.text,
-              color1: e.color1,
-              color2: e.color2,
-              onPress: () => print('Hola'),
-            ))
+    List<Widget> itemMap = items
+        .map((e) => FadeInLeft(
+          child: FatButton(
+                icon: e.icon,
+                text: e.text,
+                color1: e.color1,
+                color2: e.color2,
+                onPress: () => print('Hola'),
+              ),
+        ))
         .toList();
 
     return Scaffold(
@@ -58,18 +61,42 @@ class EmergencyPage extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(top: 280),
           child: ListView(
+            physics: BouncingScrollPhysics(),
             children: itemMap,
           ),
         ),
+        _Header(),
+      ],
+    ));
+  }
+}
+
+class _Header extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
         IconHeader(
           icon: FontAwesomeIcons.pumpMedical,
           title: 'Asistencia Medica',
           subtitle: 'Haz Solicitado',
           color1: Color(0xff66A9F2),
           color2: Color(0xff536CF6),
+        ),
+        Positioned(
+          right: 0,
+          top: 50,
+          child: RawMaterialButton(
+              padding: EdgeInsets.all(15),
+              onPressed: () {},
+              shape: CircleBorder(),
+              child: FaIcon(
+                FontAwesomeIcons.ellipsisV,
+                color: Colors.white,
+              )),
         )
       ],
-    ));
+    );
   }
 }
 
