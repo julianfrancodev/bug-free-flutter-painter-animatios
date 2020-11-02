@@ -1,3 +1,4 @@
+import 'package:custom_painter/theme/theme.dart';
 import 'package:custom_painter/widgets/pinterest_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -7,7 +8,7 @@ class PinteresPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_)=> _MenuModel(),
+      create: (_) => _MenuModel(),
       child: Scaffold(
         // body: PinteresMenu(),
         body: Stack(
@@ -25,22 +26,32 @@ class _PinterestMenuPositioned extends StatelessWidget {
 
     final show = Provider.of<_MenuModel>(context).show;
 
+    final appTheme = Provider.of<ThemeChanger>(context).currentTheme;
+
     return Positioned(
         bottom: 30,
         child: Container(
           width: width.width,
           child: Align(
-            child: PinteresMenu(show: show,inactiveColor: Colors.blueGrey,items: [
+            child: PinteresMenu(
+              backgroundColor: appTheme.scaffoldBackgroundColor,
+              activeColor: appTheme.accentColor,
+              show: show,
+              inactiveColor: Colors.blueGrey,
+              items: [
                 PinterestButton(
-                    icon: Icons.pie_chart, onPressed: () => print("Icon pie chart")),
-                PinterestButton(icon: Icons.search, onPressed: () => print("Icon search")),
+                    icon: Icons.pie_chart,
+                    onPressed: () => print("Icon pie chart")),
+                PinterestButton(
+                    icon: Icons.search, onPressed: () => print("Icon search")),
                 PinterestButton(
                     icon: Icons.notifications_active_outlined,
                     onPressed: () => print("Icon notifications")),
                 PinterestButton(
                     icon: Icons.supervised_user_circle_outlined,
                     onPressed: () => print("Icon user"))
-            ],),
+              ],
+            ),
           ),
         ));
   }
@@ -61,12 +72,11 @@ class __PinterestGridState extends State<_PinterestGrid> {
   void initState() {
     // TODO: implement initState
     controller.addListener(() {
-
-      if(controller.offset > beforeScroll){
+      if (controller.offset > beforeScroll) {
         Provider.of<_MenuModel>(context, listen: false).show = false;
-      }else if(controller.offset == 0.0 || beforeScroll == 0.0){
+      } else if (controller.offset == 0.0 || beforeScroll == 0.0) {
         Provider.of<_MenuModel>(context, listen: false).show = true;
-      }else{
+      } else {
         Provider.of<_MenuModel>(context, listen: false).show = true;
       }
 
@@ -117,14 +127,13 @@ class _PinteresItem extends StatelessWidget {
   }
 }
 
-
-class _MenuModel with ChangeNotifier{
+class _MenuModel with ChangeNotifier {
   bool _show = true;
 
   bool get show => this._show;
 
-  set show(bool show){
+  set show(bool show) {
     this._show = show;
-    notifyListeners(); 
+    notifyListeners();
   }
 }
