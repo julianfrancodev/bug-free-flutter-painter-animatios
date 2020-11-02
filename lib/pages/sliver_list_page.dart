@@ -4,11 +4,13 @@ class SliverListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        _MainScroll(),
-        Positioned(bottom: -10, right: 0, child: _ButtonNewList()),
-      ],
+        body: SafeArea(
+      child: Stack(
+        children: [
+          _MainScroll(),
+          Positioned(bottom: -10, right: 0, child: _ButtonNewList()),
+        ],
+      ),
     ));
   }
 }
