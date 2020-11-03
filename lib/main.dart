@@ -1,4 +1,5 @@
 import 'package:custom_painter/pages/launcher_page.dart';
+import 'package:custom_painter/pages/launcher_tablet_page.dart';
 import 'package:custom_painter/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,17 @@ void main() {
           return MaterialApp(
             theme: appTheme.currentTheme,
             debugShowCheckedModeBanner: false,
-            home: LauncherPage(),
+            home: OrientationBuilder(
+              builder: (context, orientation) {
+                final screenSize = MediaQuery.of(context).size;
+
+                if (screenSize.width > 500) {
+                  return LauncherTabletPage();
+                } else {
+                  return LauncherPage();
+                }
+              },
+            ),
           );
         },
       )));

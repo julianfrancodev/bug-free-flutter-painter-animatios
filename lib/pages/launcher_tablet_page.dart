@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class LauncherPage extends StatelessWidget {
+class LauncherTabletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = Provider.of<ThemeChanger>(context).currentTheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutter Designs"),
+        title: Text("Flutter Designs Tablet"),
         backgroundColor: appTheme.accentColor ,
       ),
       drawer: _MainMenu(),
