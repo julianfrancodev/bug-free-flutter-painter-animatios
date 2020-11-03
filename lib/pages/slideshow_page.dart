@@ -7,13 +7,27 @@ import 'package:provider/provider.dart';
 class SlidesShowPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    bool isLarge;
+
+    if (MediaQuery.of(context).size.height > 500) {
+      isLarge = true;
+    } else {
+      isLarge = false;
+    }
+
+    final List<Widget> children = [
+      Expanded(child: _SlideShown()),
+      Expanded(child: _SlideShown()),
+    ];
+
     return Scaffold(
-        body: Column(
-      children: [
-        Expanded(child: _SlideShown()),
-        Expanded(child: _SlideShown()),
-      ],
-    ));
+        body: (isLarge)
+            ? Column(
+                children: children,
+              )
+            : Row(
+                children: children,
+              ));
   }
 }
 
@@ -31,7 +45,6 @@ class _SlideShown extends StatelessWidget {
         SvgPicture.asset('assets/images/slide-5.svg'),
       ],
       topDots: false,
-
       dotPrimaryColor: (appTheme.darkTheme)
           ? appTheme.currentTheme.accentColor
           : Colors.pink,

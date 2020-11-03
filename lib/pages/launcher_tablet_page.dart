@@ -1,3 +1,5 @@
+import 'package:custom_painter/labs/slideshow_page.dart';
+import 'package:custom_painter/models/layout_model.dart';
 import 'package:custom_painter/routes.dart';
 import 'package:custom_painter/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -7,15 +9,34 @@ import 'package:provider/provider.dart';
 class LauncherTabletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTheme = Provider.of<ThemeChanger>(context).currentTheme;
-
+    final appTheme = Provider.of<ThemeChanger>(context);
+    final layoutModel = Provider.of<LayoutModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Flutter Designs Tablet"),
-        backgroundColor: appTheme.accentColor ,
+        backgroundColor: appTheme.currentTheme.accentColor,
       ),
       drawer: _MainMenu(),
-      body: _OptionsList(),
+      body: Row(
+        children: [
+          Container(
+            width: 300,
+            height: double.infinity,
+            child: _OptionsList(),
+          ),
+          Container(
+            width: 1,
+            height: double.infinity,
+            color: (appTheme.darkTheme)
+                ? Colors.grey
+                : appTheme.currentTheme.accentColor,
+          ),
+          Expanded(
+            child: layoutModel.currentPage,
+          )
+        ],
+      ),
+      // body: _OptionsList(),
     );
   }
 }
@@ -23,7 +44,6 @@ class LauncherTabletPage extends StatelessWidget {
 class _OptionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     final appTheme = Provider.of<ThemeChanger>(context).currentTheme;
 
     return ListView.separated(
@@ -43,10 +63,15 @@ class _OptionsList extends StatelessWidget {
           color: appTheme.accentColor,
         ),
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => pageRoutes[index].page));
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (BuildContext context) => pageRoutes[index].page));
+
+          final layoutModel = Provider.of<LayoutModel>(context, listen: false);
+
+          layoutModel.currentPage = pageRoutes[index].page;
+
         },
       ),
     );
@@ -56,7 +81,6 @@ class _OptionsList extends StatelessWidget {
 class _MainMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     final appTheme = Provider.of<ThemeChanger>(context);
 
     return Drawer(
